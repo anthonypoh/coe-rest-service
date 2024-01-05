@@ -4,8 +4,6 @@ import io
 import json
 import os
 import zipfile
-from flask import jsonify
-from matplotlib import pyplot as plt
 import pandas as pd
 import requests
 from sklearn.linear_model import LinearRegression
