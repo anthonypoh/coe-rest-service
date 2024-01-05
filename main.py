@@ -10,12 +10,7 @@ directory = os.getcwd()
 
 @app.route("/")
 def index():
-    return jsonify({"Choo Choo": "Welcome to your Flask app 🚅"})
-
-
-@app.route("/api/hello", methods=["GET"])
-def hello():
-    return jsonify(message="Hello from Python microservice!")
+    return jsonify({"Hello": "World"})
 
 
 @app.route("/api/get-prediction/<int:quota>/<string:cat>", methods=["GET"])
