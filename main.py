@@ -1,6 +1,6 @@
 from flask import Flask, jsonify
 import os
-from services import download, unzip, correlation, predict
+from services import download, unzip, correlation, predict, latest, differences
 
 app = Flask(__name__)
 
@@ -10,7 +10,27 @@ directory = os.getcwd()
 
 @app.route("/")
 def index():
-    return jsonify({"Hello": "World"})
+    zip_file_path = directory + "/data/file.zip"
+    csv_file_pattern = "*-coe_results.csv"
+
+    download(LTA_COE_BIDDING_RESULT, "/data")
+    df = unzip(zip_file_path, csv_file_pattern)
+
+    last_5_rows = latest(df)
+    return last_5_rows.to_json(orient="records")
+    # return df.to_json(orient="records")
+
+
+@app.route("/api/get-difference")
+def getDifference():
+    zip_file_path = directory + "/data/file.zip"
+    csv_file_pattern = "*-coe_results.csv"
+
+    download(LTA_COE_BIDDING_RESULT, "/data")
+    df = unzip(zip_file_path, csv_file_pattern)
+
+    difference = differences(df)
+    return jsonify(difference=difference)
 
 
 @app.route("/api/get-prediction/<int:quota>/<string:cat>", methods=["GET"])
